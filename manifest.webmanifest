@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "Al-Ma’thurat — Daily Adhkar",
+  "short_name": "Al-Ma’thurat",
+  "description": "A quiet, offline-friendly reader for morning and evening adhkar.",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3efe6",
+  "theme_color": "#f3efe6",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en" data-theme="auto" data-session="home">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f3efe6">
+    <meta name="description" content="A quiet, offline-friendly reader for morning and evening adhkar.">
+    <meta property="og:title" content="Al-Ma’thurat | Daily Adhkar">
+    <meta property="og:description" content="A quiet, offline-friendly reader for morning and evening adhkar.">
+    <meta property="og:type" content="website">
+    <title>Al-Ma’thurat | Daily Adhkar</title>
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./css/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Al-Ma’thurat home">
+        <span class="brand-arabic" lang="ar" dir="rtl">المأثورات</span>
+        <span class="brand-name">Al-Ma’thurat</span>
+      </a>
+      <nav class="header-actions" aria-label="App">
+        <button class="header-link" id="about-open" type="button" aria-label="About and sources"><span>About</span><span class="about-label-full"> &amp; sources</span></button>
+        <button class="icon-button" id="settings-open" type="button" aria-label="Open reading settings" title="Settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9m4 0h3M4 17h3m4 0h9M13 4v6M7 14v6"/></svg>
+        </button>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section id="home-view" class="home-view" aria-labelledby="home-greeting">
+        <div class="home-intro">
+          <h1 id="home-greeting">Good morning</h1>
+          <p class="date-line"><time id="today-date"></time><span aria-hidden="true">·</span><span id="hijri-date"></span></p>
+          <p class="home-error" id="home-error" hidden></p>
+        </div>
+        <div class="session-cards" aria-label="Choose a session">
+          <button class="session-card session-morning" type="button" data-session="morning">
+            <span class="session-card-copy">
+              <span class="session-title">Morning adhkar <span lang="ar" dir="rtl">أذكار الصباح</span></span>
+              <span class="session-summary" id="morning-summary">Start</span>
+              <span class="suggested-badge" hidden>Suggested now</span>
+            </span>
+            <span class="session-ring" id="morning-ring" role="img" aria-label="0 of 27 reminders complete">
+              <svg viewBox="0 0 52 52"><circle class="ring-track" cx="26" cy="26" r="22"></circle><circle class="ring-progress" id="morning-ring-progress" cx="26" cy="26" r="22"></circle></svg>
+              <span id="morning-ring-label">0%</span>
+            </span>
+          </button>
+          <button class="session-card session-evening" type="button" data-session="evening">
+            <span class="session-card-copy">
+              <span class="session-title">Evening adhkar <span lang="ar" dir="rtl">أذكار المساء</span></span>
+              <span class="session-summary" id="evening-summary">Start</span>
+              <span class="suggested-badge" hidden>Suggested now</span>
+            </span>
+            <span class="session-ring" id="evening-ring" role="img" aria-label="0 of 27 reminders complete">
+              <svg viewBox="0 0 52 52"><circle class="ring-track" cx="26" cy="26" r="22"></circle><circle class="ring-progress" id="evening-ring-progress" cx="26" cy="26" r="22"></circle></svg>
+              <span id="evening-ring-label">0%</span>
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <section id="reader-view" class="reader-view" aria-label="Adhkar reader" hidden>
+        <div class="reader-progress" role="progressbar" aria-label="Session progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar">
+          <span id="progress-fill"></span>
+        </div>
+        <div class="reader-scroll" id="reader-scroll" tabindex="0" aria-label="Dhikr content">
+          <div class="reader-topbar">
+            <button class="text-button" id="back-home" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7M7 12h13"/></svg>
+              <span>Sessions</span>
+            </button>
+            <div class="reader-location">
+              <span class="session-label" id="reader-session-label"></span>
+              <span class="reader-position" id="reader-progress-label">1 / 27</span>
+            </div>
+          </div>
+          <div class="reader-tools">
+            <button class="tool-button" id="jump-open" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
+              <span>Browse adhkar</span>
+            </button>
+            <button class="tool-button" id="reset-session" type="button">Reset progress</button>
+          </div>
+
+          <article class="dhikr-page" id="dhikr-card">
+            <div class="card-heading">
+              <div>
+                <p class="card-order" id="card-order"></p>
+                <h2 id="dhikr-title"></h2>
+              </div>
+              <button class="icon-button share-button" id="share-dhikr" type="button" aria-label="Share this dhikr" title="Share">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.1a2.9 2.9 0 0 0-2.3 1.1l-6.5-3.8a3.1 3.1 0 0 0 0-2.8l6.5-3.8a3 3 0 1 0-.9-1.7L8.3 8.9a3 3 0 1 0 0 6.2l6.5 3.8a3 3 0 1 0 3.2-2.8Z"/></svg>
+              </button>
+            </div>
+            <p class="arabic-text" id="dhikr-arabic" lang="ar" dir="rtl"></p>
+            <p class="transliteration text-layer" id="dhikr-transliteration"></p>
+            <p class="translation text-layer" id="dhikr-translation"></p>
+            <div class="reference-row">
+              <span id="dhikr-reference"></span>
+              <a class="source-link" id="dhikr-source-link" target="_blank" rel="noopener noreferrer">Source</a>
+              <span class="reference-grading" id="dhikr-grading" hidden></span>
+            </div>
+            <details class="about-details" id="dhikr-note" hidden>
+              <summary>About this text</summary>
+              <p id="dhikr-note-text"></p>
+            </details>
+          </article>
+        </div>
+
+        <nav class="action-bar" aria-label="Dhikr navigation">
+          <button class="action-nav" id="previous-item" type="button" aria-label="Previous dhikr">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7M7 12h13"/></svg>
+            <span>Previous</span>
+          </button>
+          <div class="counter-control">
+            <span class="counter-number" id="counter-number">0 / 1</span>
+            <button class="counter-button" id="count-button" type="button" aria-label="Count this dhikr">
+              <svg class="counter-ring" viewBox="0 0 88 88" aria-hidden="true">
+                <circle class="counter-ring-track" cx="44" cy="44" r="39"></circle>
+                <circle class="counter-ring-progress" id="counter-ring-progress" cx="44" cy="44" r="39"></circle>
+              </svg>
+              <svg class="counter-check" id="counter-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg>
+            </button>
+          </div>
+          <button class="action-nav action-next" id="next-item" type="button">
+            <span id="next-label">Next</span>
+            <svg id="next-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h13m-6-7 7 7-7 7"/></svg>
+          </button>
+        </nav>
+        <p class="counter-status sr-only" id="counter-status" aria-live="polite"></p>
+        <span class="sr-only" id="item-position" aria-live="polite"></span>
+      </section>
+
+      <section id="complete-view" class="complete-view" aria-labelledby="complete-title" hidden>
+        <svg class="complete-mark" viewBox="0 0 48 48" aria-hidden="true"><path d="m11 25 8 8L37 15"/></svg>
+        <h1 id="complete-title">May Allah accept from you.</h1>
+        <p>You have completed today’s <span id="complete-session-name"></span> remembrance.</p>
+        <button class="primary-button" id="return-home" type="button">Return to sessions</button>
+      </section>
+
+      <p class="toast" id="toast" role="status" aria-live="polite" hidden></p>
+    </main>
+
+    <dialog class="sheet-dialog settings-dialog" id="settings-dialog" aria-labelledby="settings-title">
+      <div class="dialog-heading">
+        <div><h2 id="settings-title">Reading settings</h2></div>
+        <button class="icon-button" id="settings-close" type="button" aria-label="Close settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <fieldset class="settings-group">
+        <legend>Show</legend>
+        <label class="setting-toggle"><span>Arabic</span><input type="checkbox" id="show-arabic"><span class="switch" aria-hidden="true"></span></label>
+        <label class="setting-toggle"><span>Transliteration</span><input type="checkbox" id="show-transliteration"><span class="switch" aria-hidden="true"></span></label>
+        <label class="setting-toggle"><span>Translation</span><input type="checkbox" id="show-translation"><span class="switch" aria-hidden="true"></span></label>
+      </fieldset>
+      <fieldset class="settings-group">
+        <legend>Text size</legend>
+        <label class="range-setting" for="arabic-size"><span>Arabic</span><output id="arabic-size-value"></output>
+          <input type="range" id="arabic-size" min="24" max="44" step="1" aria-label="Arabic font size">
+        </label>
+        <label class="range-setting" for="translation-size"><span>Translation</span><output id="translation-size-value"></output>
+          <input type="range" id="translation-size" min="15" max="24" step="1" aria-label="Translation font size">
+        </label>
+      </fieldset>
+      <fieldset class="settings-group">
+        <legend>Theme</legend>
+        <div class="theme-segment" role="radiogroup" aria-label="Color theme">
+          <label><input type="radio" name="theme" value="auto"><span>Auto</span></label>
+          <label><input type="radio" name="theme" value="light"><span>Light</span></label>
+          <label><input type="radio" name="theme" value="sepia"><span>Sepia</span></label>
+          <label><input type="radio" name="theme" value="dark"><span>Dark</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="settings-group settings-last">
+        <legend>Haptics</legend>
+        <label class="setting-toggle"><span>Vibrate on count</span><input type="checkbox" id="haptics-toggle"><span class="switch" aria-hidden="true"></span></label>
+      </fieldset>
+    </dialog>
+
+    <dialog class="sheet-dialog list-dialog" id="jump-dialog" aria-labelledby="jump-title">
+      <div class="dialog-heading">
+        <h2 id="jump-title">Browse adhkar</h2>
+        <button class="icon-button" id="jump-close" type="button" aria-label="Close adhkar list">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="jump-list" id="jump-list" role="list"></div>
+    </dialog>
+
+    <dialog class="sheet-dialog confirm-dialog" id="reset-dialog" aria-labelledby="reset-title" aria-describedby="reset-description">
+      <div class="dialog-heading">
+        <h2 id="reset-title">Reset this session?</h2>
+        <button class="icon-button" id="reset-close" type="button" aria-label="Cancel reset">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <p id="reset-description">Today’s progress for this session will be cleared. This cannot be undone.</p>
+      <div class="dialog-actions">
+        <button class="secondary-button" id="reset-cancel" type="button">Keep progress</button>
+        <button class="primary-button" id="reset-confirm" type="button">Reset progress</button>
+      </div>
+    </dialog>
+
+    <dialog class="sheet-dialog about-dialog" id="about-dialog" aria-labelledby="about-title">
+      <div class="dialog-heading">
+        <h2 id="about-title">About &amp; sources</h2>
+        <button class="icon-button" id="about-close" type="button" aria-label="Close about and sources">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="about-copy">
+        <p>Al-Ma’thurat as compiled by Imam Hasan al-Banna. The session list and order follow <a href="https://mathurat.com/" target="_blank" rel="noopener noreferrer">mathurat.com</a>; its English translations are not reproduced here.</p>
+        <p>Qur’anic Uthmani text: <a href="https://tanzil.net/" target="_blank" rel="noopener noreferrer">Tanzil Project</a>, reproduced verbatim under CC BY 3.0. Qur’anic translation: Sahih International via Tanzil, for <strong>non-commercial use only</strong>; permission is required for commercial use.</p>
+        <p>Hadith references are linked to <a href="https://sunnah.com/" target="_blank" rel="noopener noreferrer">Sunnah.com</a> or Hisn al-Muslim where confirmed. Other English dua translations are original app translations.</p>
+        <p>Arabic font: Amiri. Latin fonts: Inter and Newsreader.</p>
+      </div>
+    </dialog>
+
+    <footer class="site-footer">
+      <p>Content follows Al-Ma’thurat as compiled by Hasan al-Banna; verify with a trusted printed edition or qualified scholar.</p>
+    </footer>
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>

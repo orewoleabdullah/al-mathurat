@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="72" fill="#f3efe6"/>
+  <path d="M92 402h328" fill="none" stroke="#d7d0c3" stroke-width="8"/>
+  <text x="256" y="306" fill="#292821" font-family="serif" font-size="136" text-anchor="middle" direction="rtl">المأثورات</text>
+  <circle cx="256" cy="374" r="13" fill="#8d5d27"/>
+</svg>
