@@ -2,7 +2,6 @@ import { completedItems, isComplete } from "./counter.js";
 
 const byId = (id) => document.getElementById(id);
 const ringCircumference = 2 * Math.PI * 22;
-const counterCircumference = 2 * Math.PI * 39;
 
 export function showView(name) {
   byId("home-view").hidden = name !== "home";
@@ -70,18 +69,6 @@ export function renderReader({ items, session, counts, index, settings }) {
   document.documentElement.style.setProperty("--arabic-size", `${settings.arabicSize}px`);
   document.documentElement.style.setProperty("--translation-size", `${settings.translationSize}px`);
 
-  const count = counts[item.id] || 0;
-  const complete = isComplete(count, item.repeat);
-  byId("counter-number").textContent = `${count} / ${item.repeat}`;
-  byId("counter-number").hidden = complete;
-  byId("counter-check").hidden = !complete;
-  byId("count-button").classList.toggle("is-complete", complete);
-  byId("counter-status").textContent = complete ? "Alhamdulillah — completed" : `Repeat ${item.repeat} ${item.repeat === 1 ? "time" : "times"}`;
-  byId("count-button").setAttribute("aria-label", complete ? `${item.title}, completed` : `Count ${item.title}, ${item.repeat - count} remaining`);
-  byId("count-button").disabled = complete;
-  byId("counter-ring-progress").style.strokeDasharray = `${counterCircumference}`;
-  byId("counter-ring-progress").style.strokeDashoffset = `${counterCircumference * (1 - count / item.repeat)}`;
-
   const done = completedItems(items, counts);
   const percent = items.length ? Math.round((done / items.length) * 100) : 0;
   byId("reader-progress-label").textContent = `${index + 1} / ${items.length}`;
@@ -89,11 +76,16 @@ export function renderReader({ items, session, counts, index, settings }) {
   byId("progress-bar").setAttribute("aria-valuenow", String(percent));
   byId("item-position").textContent = `${item.title}, ${index + 1} of ${items.length}`;
   byId("previous-item").disabled = index === 0;
-  byId("next-label").textContent = index === items.length - 1 ? "Finish" : "Next";
-  byId("next-icon").innerHTML = index === items.length - 1
+  const willFinish = index === items.length - 1
+    && items.every((entry) => entry.id === item.id || isComplete(counts[entry.id] || 0, entry.repeat));
+  byId("next-label").textContent = willFinish ? "Finish" : "Next";
+  byId("next-icon").innerHTML = willFinish
     ? '<path d="m5 12 4.5 4.5L19 7"/>'
     : '<path d="M4 12h13m-6-7 7 7-7 7"/>';
-  byId("next-item").setAttribute("aria-label", index === items.length - 1 ? "Finish session" : "Next dhikr");
+  byId("next-item").setAttribute(
+    "aria-label",
+    willFinish ? "Complete this dhikr and finish session" : "Complete this dhikr and continue"
+  );
   byId("jump-list").querySelectorAll("[data-jump-id]").forEach((button, jumpIndex) => {
     const active = button.dataset.jumpId === item.id;
     button.setAttribute("aria-current", active ? "true" : "false");

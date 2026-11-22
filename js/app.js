@@ -1,4 +1,4 @@
-import { isComplete, nextCount } from "./counter.js";
+import { isComplete } from "./counter.js";
 import { loadProgress, loadSettings, saveProgress, saveSettings } from "./storage.js";
 import { renderHomeDate, renderHomeProgress, renderJumpList, renderReader, renderSettings, renderTheme, showToast, showView } from "./ui.js";
 
@@ -87,20 +87,30 @@ function refreshProgressForNewDay() {
 }
 
 function nextItem() {
+  refreshProgressForNewDay();
+  const items = sessions[activeSession];
+  const item = items[activeIndex];
+  const counts = progress.sessions[activeSession];
+  const wasComplete = isComplete(counts[item.id] || 0, item.repeat);
+  counts[item.id] = item.repeat;
+  persistProgress();
+  if (!wasComplete && settings.haptics && navigator.vibrate) navigator.vibrate([30, 45, 30]);
+
   if (activeIndex < sessions[activeSession].length - 1) {
     activeIndex += 1;
     render(true);
     return;
   }
-  const items = sessions[activeSession];
-  const done = items.every((item) => isComplete(progress.sessions[activeSession][item.id] || 0, item.repeat));
-  if (done) {
-    $("complete-session-name").textContent = activeSession === "morning" ? "morning" : "evening";
-    showView("complete");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  } else {
-    showToast("Finish the remaining repetitions before completing the session.");
+  const firstIncomplete = items.findIndex((entry) => !isComplete(counts[entry.id] || 0, entry.repeat));
+  if (firstIncomplete >= 0) {
+    activeIndex = firstIncomplete;
+    render(true);
+    showToast("Continue with the remaining adhkar.");
+    return;
   }
+  $("complete-session-name").textContent = activeSession === "morning" ? "morning" : "evening";
+  showView("complete");
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function updateSettings() {
@@ -154,18 +164,6 @@ function bindEvents(allItems) {
   document.querySelector(`[data-session="${suggestion}"] .suggested-badge`).hidden = false;
   $("back-home").addEventListener("click", () => showHome(allItems));
   $("return-home").addEventListener("click", () => showHome(allItems));
-  $("count-button").addEventListener("click", () => {
-    refreshProgressForNewDay();
-    const item = sessions[activeSession][activeIndex];
-    const counts = progress.sessions[activeSession];
-    const before = counts[item.id] || 0;
-    const after = nextCount(before, item.repeat);
-    counts[item.id] = after;
-    persistProgress();
-    render();
-    if (settings.haptics && navigator.vibrate) navigator.vibrate(after === item.repeat ? [30, 45, 30] : 15);
-    if (after === item.repeat) showToast("Dhikr completed.");
-  });
   $("previous-item").addEventListener("click", () => {
     if (activeIndex > 0) {
       activeIndex -= 1;
@@ -252,9 +250,8 @@ function bindEvents(allItems) {
   window.addEventListener("keydown", (event) => {
     if (document.querySelector("dialog[open]") || $("reader-view").hidden || event.altKey || event.ctrlKey || event.metaKey) return;
     if (event.target.matches("input, select, textarea, button, a")) return;
-    if (event.key === "ArrowRight" && activeIndex < sessions[activeSession].length - 1) {
-      activeIndex += 1;
-      render(true);
+    if (event.key === "ArrowRight") {
+      nextItem();
     } else if (event.key === "ArrowLeft" && activeIndex > 0) {
       activeIndex -= 1;
       render(true);

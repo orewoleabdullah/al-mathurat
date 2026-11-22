@@ -27,7 +27,7 @@ The session tiles have their own subtle tones: morning uses `#f1ebdf` with text 
 - Separate Morning (Sabah) and Evening (Masa’) sessions with a time-of-day suggestion.
 - Session tiles show progress and resume at the next unfinished remembrance.
 - Independent Arabic, transliteration, and translation visibility controls.
-- Open-page reading layout, per-dhikr repetition counters, session progress, previous/next and swipe navigation, and a completion-marked jump sheet.
+- Open-page reading layout; the Next action marks the current dhikr complete and advances the session progress bar; previous/next and swipe navigation; and a completion-marked jump sheet.
 - Daily progress saved separately for each session in local storage.
 - A custom reset confirmation and a quiet completion screen.
 - Light, dark, sepia, and automatic themes; adjustable Arabic and translation sizes.

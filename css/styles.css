@@ -682,7 +682,7 @@ p {
   width: 100vw;
   min-height: 96px;
   display: grid;
-  grid-template-columns: minmax(90px, 1fr) 88px minmax(90px, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   justify-self: stretch;
   margin-inline: calc((100% - 100vw) / 2);
@@ -720,76 +720,6 @@ p {
 
 .action-next {
   justify-self: stretch;
-}
-
-.counter-button {
-  width: 88px;
-  height: 88px;
-  position: relative;
-  display: grid;
-  place-items: center;
-  justify-self: center;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--accent);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.counter-control {
-  width: 88px;
-  display: grid;
-  grid-template-rows: 14px 88px;
-  justify-items: center;
-  align-items: center;
-  gap: var(--space-1);
-}
-
-.counter-ring {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-
-.counter-ring circle {
-  fill: none;
-  stroke-width: 1.6;
-}
-
-.counter-ring-track {
-  stroke: var(--line);
-}
-
-.counter-ring-progress {
-  stroke: var(--accent);
-  stroke-linecap: round;
-  transition: stroke-dashoffset 180ms ease;
-}
-
-.counter-number {
-  line-height: 14px;
-  color: var(--ink);
-  font-size: var(--type-small);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.counter-check {
-  position: absolute;
-  width: 28px;
-  height: 28px;
-  color: var(--accent);
-}
-
-.counter-button:disabled {
-  cursor: default;
-}
-
-.counter-button.is-complete .counter-ring-progress {
-  stroke: var(--accent);
 }
 
 .complete-view {
@@ -1204,20 +1134,10 @@ p {
   }
 
   .action-bar {
-    grid-template-columns: minmax(68px, 1fr) 76px minmax(68px, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: var(--space-2);
     padding-right: var(--space-3);
     padding-left: var(--space-3);
-  }
-
-  .counter-button {
-    width: 76px;
-    height: 76px;
-  }
-
-  .counter-control {
-    width: 76px;
-    grid-template-rows: 14px 76px;
   }
 
   .action-nav {
@@ -1258,19 +1178,9 @@ p {
   }
 
   .action-bar {
-    grid-template-columns: minmax(60px, 1fr) 72px minmax(60px, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     padding-right: var(--space-2);
     padding-left: var(--space-2);
-  }
-
-  .counter-button {
-    width: 72px;
-    height: 72px;
-  }
-
-  .counter-control {
-    width: 72px;
-    grid-template-rows: 14px 72px;
   }
 
   .action-nav {
